@@ -61,10 +61,16 @@ export const NewClient = styled.div`
       border: 1px solid #d9d9d9;
       border-radius: 10px;
     }
+    span {
+      color: red;
+      font-size: 14px;
+    }
   }
 
   div {
     margin-top: 59px;
+    display: flex;
+    align-items: center;
     button {
       width: 134px;
       height: 45px;
@@ -73,9 +79,19 @@ export const NewClient = styled.div`
       border: 1px solid #08436f;
       border-radius: 5px;
       margin-right: 27px;
-      &:last-child {
+    }
+    a {
+      color: inherit;
+      span {
+        width: 134px;
+        display: flex;
+        height: 45px;
         background: #fff;
         color: #08436f;
+        border: 1px solid #08436f;
+        border-radius: 5px;
+        align-items: center;
+        justify-content: center;
       }
     }
   }

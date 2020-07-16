@@ -40,5 +40,10 @@ export const Container = styled.div`
         background: #042a47;
       }
     }
+    span {
+      margin-top: 5px;
+      color: red;
+      font-size: 14px;
+    }
   }
 `;

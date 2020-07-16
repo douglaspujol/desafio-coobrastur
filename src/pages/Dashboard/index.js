@@ -1,9 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { changeDashboard } from '../../store/modules/Client/actions';
+
 import IconUser from '../../assets/icon_user.png';
 import { Container, Main, Navigation, Clients } from './styles';
+import api from '../../services/api';
 
 function Dashboard() {
+  const dispatch = useDispatch();
+  const [clientes, setClientes] = useState([]);
+  const [totalC, setTotalC] = useState('');
+  const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState(0);
+
+  useEffect(() => {
+    async function getClientes() {
+      const response = await api.get(`/users?page=${page}`);
+
+      const { data, total, per_page } = response.data;
+
+      setClientes([...data]);
+      setTotalC(total);
+      setPageCount(per_page);
+    }
+    getClientes();
+    dispatch(changeDashboard(true));
+  }, [page]);
+
+  function handleNextPage() {
+    if (totalC > pageCount * page) {
+      setPage(page + 1);
+    }
+  }
+
+  function handleTotalPage() {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  }
   return (
     <Container>
       <Main>
@@ -13,56 +48,26 @@ function Dashboard() {
             <h2>Painel de clientes</h2>
           </header>
           <ul>
-            <li>
-              <div>
-                <img
-                  src="https://conteudo.imguol.com.br/c/entretenimento/38/2017/12/21/cena-de-avatar-2009-1513852401735_v2_450x600.jpg"
-                  alt="Foto de avatar"
-                />
-                <span>Douglas Pujol</span>
-              </div>
-              <span>douglas.pujol@outlook.com</span>
-              <Link to="/register"> Editar </Link>
-            </li>
-            <li>
-              <div>
-                <img
-                  src="https://conteudo.imguol.com.br/c/entretenimento/38/2017/12/21/cena-de-avatar-2009-1513852401735_v2_450x600.jpg"
-                  alt="Foto de avatar"
-                />
-                <span>Douglas Pujol</span>
-              </div>
-              <span>douglas.pujol@outlook.com</span>
-              <Link to="/register"> Editar </Link>
-            </li>
-            <li>
-              <div>
-                <img
-                  src="https://conteudo.imguol.com.br/c/entretenimento/38/2017/12/21/cena-de-avatar-2009-1513852401735_v2_450x600.jpg"
-                  alt="Foto de avatar"
-                />
-                <span>Douglas Pujol</span>
-              </div>
-              <span>douglas.pujol@outlook.com</span>
-              <Link to="/register"> Editar </Link>
-            </li>
-            <li>
-              <div>
-                <img
-                  src="https://conteudo.imguol.com.br/c/entretenimento/38/2017/12/21/cena-de-avatar-2009-1513852401735_v2_450x600.jpg"
-                  alt="Foto de avatar"
-                />
-                <span>Douglas Pujol</span>
-              </div>
-              <span>douglas.pujol@outlook.com</span>
-              <Link to="/register"> Editar </Link>
-            </li>
+            {clientes.map(cliente => (
+              <li key={cliente.id}>
+                <div>
+                  <img src={cliente.avatar} alt={cliente.first_name} />
+                  <span>{`${cliente.first_name} ${cliente.last_name}`}</span>
+                </div>
+                <span>{cliente.email}</span>
+                <Link to="/register"> Editar </Link>
+              </li>
+            ))}
           </ul>
-          <span>Total de clientes:</span>
+          <span>Total de clientes: {totalC}</span>
         </Clients>
         <Navigation>
-          <button type="button">Anterior</button>
-          <button type="button">Próximo</button>
+          <button type="button" onClick={handleTotalPage}>
+            Anterior
+          </button>
+          <button type="button" onClick={handleNextPage}>
+            Próximo
+          </button>
         </Navigation>
       </Main>
     </Container>

@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import LogoPrata from '../../assets/logo_coob_web_prata.png';
 import Add from '../../assets/add.png';
 import Logout from '../../assets/logout.png';
@@ -7,10 +9,14 @@ import Logout from '../../assets/logout.png';
 import { Container } from './styles';
 
 function Header() {
+  const onDisplay = useSelector(state => state.client.visible);
+
   return (
-    <Container>
+    <Container setDisplay={onDisplay}>
       <div>
-        <img src={LogoPrata} alt="Logo Coobrastur" />
+        <Link to="/dashboard">
+          <img src={LogoPrata} alt="Logo Coobrastur" />
+        </Link>
         <div>
           <Link to="/register">
             <img src={Add} alt="Registrar novo cliente" />

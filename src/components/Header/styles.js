@@ -22,7 +22,7 @@ export const Container = styled.header`
         border-radius: 9px;
         width: 200px;
         height: 40px;
-        display: flex;
+        display: ${props => (props.setDisplay ? `flex` : `none`)};
         align-items: center;
         justify-content: center;
         color: inherit;
